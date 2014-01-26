@@ -1,29 +1,9 @@
-/*
- * Copyright 2011 Gildas Lormeau
- * contact : gildas.lormeau <at> gmail.com
- * 
- * This file is part of PageEdit.
- *
- *   PageEdit is free software: you can redistribute it and/or modify
- *   it under the terms of the GNU Lesser General Public License as published by
- *   the Free Software Foundation, either version 3 of the License, or
- *   (at your option) any later version.
- *
- *   PageEdit is distributed in the hope that it will be useful,
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *   GNU Lesser General Public License for more details.
- *
- *   You should have received a copy of the GNU Lesser General Public License
- *   along with PageEdit.  If not, see <http://www.gnu.org/licenses/>.
- */
-
-var pageedit;
+var gheditor;
 
 (function() {
 
 	var URL = window.webkitURL || window.URL;
-	var EXT_ID = "pageedit", TEXTAREA_ID = "__CKEditor_textArea__";
+	var EXT_ID = "gheditor", TEXTAREA_ID = "__CKEditor_textArea__";
 
 	function getDoctype() {
 		var docType = document.doctype, docTypeStr;
@@ -79,23 +59,23 @@ var pageedit;
 			CKEDITOR.config.skin = message.options.skin;
 			CKEDITOR.config.toolbar = message.options.toolbar;
 			CKEDITOR.dialog.add('saveDialog', savedialog);
-			pageedit = {
+			gheditor = {
 				editor : CKEDITOR.replace(TEXTAREA_ID, {
 					customConfig : message.configScript
 				})
 			};
-			pageedit.editor.setData(pageContent, function() {
-				pageedit.editor.addCommand('save', new CKEDITOR.dialogCommand('saveDialog'));
-				pageedit.editor.execCommand("maximize");
+			gheditor.editor.setData(pageContent, function() {
+				gheditor.editor.addCommand('save', new CKEDITOR.dialogCommand('saveDialog'));
+				gheditor.editor.execCommand("maximize");
 			});
 		}
 
 		if (message.toggleEditor) {
-			if (pageedit && pageedit.editor) {
-				var data = pageedit.editor.getData();
-				CKEDITOR.remove(pageedit.editor);
+			if (gheditor && gheditor.editor) {
+				var data = gheditor.editor.getData();
+				CKEDITOR.remove(gheditor.editor);
 				delete CKEDITOR;
-				delete pageedit.editor;
+				delete gheditor.editor;
 				document.open();
 				document.write(data);
 				document.close();

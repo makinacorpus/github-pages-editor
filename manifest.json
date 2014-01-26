@@ -1,10 +1,10 @@
 {
-  "name": "PageEdit",
+  "name": "GitHub Pages editor",
   "icons": {
     "48": "icon_48.png",
     "128": "icon_128.png"},
-  "version": "0.0.30",
-  "description": "Edit any HTML page into Chrome with this powerful WYSIWYG editor",
+  "version": "0.1",
+  "description": "Edit your GitHub pages hosted website in Chrome, and changes are directly committed on GitHub.",
   "content_scripts": [{
     "matches": ["http://*/*", "https://*/*", "file:///*"],
     "js": [ "content.js" ],

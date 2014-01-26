@@ -1,37 +1,30 @@
-/*
- * Copyright 2011 Gildas Lormeau
- * contact : gildas.lormeau <at> gmail.com
- * 
- * This file is part of PageEdit.
- *
- *   PageEdit is free software: you can redistribute it and/or modify
- *   it under the terms of the GNU Lesser General Public License as published by
- *   the Free Software Foundation, either version 3 of the License, or
- *   (at your option) any later version.
- *
- *   PageEdit is distributed in the hope that it will be useful,
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *   GNU Lesser General Public License for more details.
- *
- *   You should have received a copy of the GNU Lesser General Public License
- *   along with PageEdit.  If not, see <http://www.gnu.org/licenses/>.
- */
+// Saves options to localStorage.
+function save_options() {
+  var fields = ["user", "repository", "branch", "account", "password"];
+  for(var i=0; i<fields.length; i++) {
+    var field = document.getElementById("field-" + fields[i]);
+    localStorage[fields[i]] = field.value;
+  }
 
-function initOptions() {
-	var bgPage = chrome.extension.getBackgroundPage(), options = bgPage.getOptions(), skinInput = document.getElementById("skinInput"), toolbarInput = document
-			.getElementById("toolbarInput");
-	skinInput.value = options.skin;
-	skinInput.addEventListener("change", function() {
-		options.skin = skinInput.value;
-		bgPage.setOptions(options);
-	});
-	toolbarInput.value = options.toolbar;
-	toolbarInput.addEventListener("change", function() {
-		options.toolbar = toolbarInput.value;
-		bgPage.setOptions(options);
-	});
-	document.getElementById('main').style.display = 'block';
+  // Update status to let user know options were saved.
+  var status = document.getElementById("status");
+  status.innerHTML = "Options Saved.";
+  setTimeout(function() {
+    status.innerHTML = "";
+  }, 750);
 }
 
-addEventListener("load", initOptions, false);
+// Restores values from localStorage.
+function restore_options() {
+  var fields = ["user", "repository", "branch", "account", "password"];
+  for(var i=0; i<fields.length; i++) {
+    var stored_value = localStorage[fields[i]];
+    if(!stored_value && fields[i] == "branch") stored_value = "gh-pages";
+    if(stored_value) {
+      var field = document.getElementById("field-" + fields[i]);
+      field.value = stored_value;
+    }
+  }
+}
+document.addEventListener('DOMContentLoaded', restore_options);
+document.querySelector('#save').addEventListener('click', save_options);
