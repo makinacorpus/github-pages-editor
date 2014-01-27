@@ -5,6 +5,30 @@ var gheditor;
 	var URL = window.webkitURL || window.URL;
 	var EXT_ID = "gheditor", TEXTAREA_ID = "__CKEditor_textArea__";
 
+	function save(html, comments) {
+		var github = new Github({
+			username: gheditor.options.account,
+			password: gheditor.options.password,
+			auth: "basic"
+		});
+		var repo = github.getRepo(
+			gheditor.options.user,
+			gheditor.options.repository
+			);
+		repo.write(
+			gheditor.options.branch,
+			'index.html',
+			html,
+			comments,
+			function(err) {
+				if(err) {
+					console.log(err);
+				} else {
+					console.log("Saved");
+				}
+			});
+	};
+
 	function getDoctype() {
 		var docType = document.doctype, docTypeStr;
 		if (docType) {
@@ -14,7 +38,7 @@ var gheditor;
 				if (docType.systemId)
 					docTypeStr += " \"" + docType.systemId + "\"";
 			} else if (docType.systemId)
-				docTypeStr += " SYSTEM \"" + docType.systemId + "\"";
+			docTypeStr += " SYSTEM \"" + docType.systemId + "\"";
 			if (docType.internalSubset)
 				docTypeStr += " [" + docType.internalSubset + "]";
 			return docTypeStr + ">\n";
@@ -37,12 +61,22 @@ var gheditor;
 				minWidth : 200,
 				minHeight : 50,
 				contents : [ {
+					id: 'tab-basic',
 					elements : [ {
-						type : 'html',
-						html : link.outerHTML
+						type : 'textarea',
+						id : 'comments',
+						label : 'Comments',
+						validate : CKEDITOR.dialog.validate.notEmpty( 'The Comments field cannot be empty.' ),
+						required : true,
+						'default' : "Changed from GitHub Pages Editor extension"
 					} ]
 				} ],
-				buttons : [ CKEDITOR.dialog.okButton ]
+				buttons : [ CKEDITOR.dialog.okButton ],
+				onOk : function(e) {
+					var html = gheditor.editor.getData();
+					var comments = this.getValueOf('tab-basic', 'comments');
+					save(html, comments)
+				}
 			};
 		}
 
@@ -62,7 +96,8 @@ var gheditor;
 			gheditor = {
 				editor : CKEDITOR.replace(TEXTAREA_ID, {
 					customConfig : message.configScript
-				})
+				}),
+				options: message.options
 			};
 			gheditor.editor.setData(pageContent, function() {
 				gheditor.editor.addCommand('save', new CKEDITOR.dialogCommand('saveDialog'));
@@ -93,7 +128,7 @@ var gheditor;
 				document.write("<body>");
 				for (i = 0; i < message.scripts.length; i++)
 					document.write("<script type='text/javascript' src='" + message.extensionURI + message.scripts[i] + "?"
-							+ ("" + Math.random()).split(".")[1] + "'></script>");
+						+ ("" + Math.random()).split(".")[1] + "'></script>");
 				document.write("</body>");
 				document.write("</html>");
 				document.close();

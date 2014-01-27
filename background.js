@@ -5,7 +5,12 @@ chrome.browserAction.onClicked.addListener(function(tab) {
     toggleEditor : true,
     options : {
       skin : "kama",
-      toolbar : "CustomFull"
+      toolbar : "CustomFull",
+      username: localStorage['account'],
+      password: localStorage['password'],
+      user: localStorage['user'],
+      repository: localStorage['repository'],
+      branch: localStorage['branch']
     }
   });
 });

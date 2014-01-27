@@ -11,7 +11,14 @@ function toggleEditor(options) {
 			toggleEditor : true,
 			extensionURI : chrome.extension.getURL(""),
 			configScript : chrome.extension.getURL("scripts/ckeditor_config.js"),
-			scripts : [ "ckeditor/ckeditor.js", "plugins/codemirror/js/codemirror.js", "plugins/codemirror/plugin.js" ],
+			scripts : [
+				"ckeditor/ckeditor.js",
+				"plugins/codemirror/js/codemirror.js",
+				"plugins/codemirror/plugin.js",
+				"lib/base64.js",
+				"lib/underscore-min.js",
+				"lib/github.js"
+			],
 			options : options
 		}), "*");
 	});

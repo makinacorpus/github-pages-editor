@@ -21,7 +21,8 @@
     "scripts/ckeditor_config.js",
     "scripts/inject_editor.js",
     "ckeditor/*",
-    "plugins/*"
+    "plugins/*",
+    "lib/*"
   ],
   "browser_action": {
       "default_icon": "icon_48.png", 
