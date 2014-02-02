@@ -6,7 +6,7 @@ chrome.browserAction.onClicked.addListener(function(tab) {
     options : {
       skin : "kama",
       toolbar : "CustomFull",
-      username: localStorage['account'],
+      account: localStorage['account'],
       password: localStorage['password'],
       user: localStorage['user'],
       repository: localStorage['repository'],
