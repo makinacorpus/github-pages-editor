@@ -5,7 +5,7 @@ var gheditor;
 	var URL = window.webkitURL || window.URL;
 	var EXT_ID = "gheditor", TEXTAREA_ID = "__CKEditor_textArea__";
 
-	function save(html, comments) {
+	function save(path, html, comments) {
 		var github = new Github({
 			username: gheditor.options.account,
 			password: gheditor.options.password,
@@ -15,7 +15,6 @@ var gheditor;
 			gheditor.options.user,
 			gheditor.options.repository
 			);
-		var path = getPath();
 		repo.write(
 			gheditor.options.branch,
 			path,
@@ -61,12 +60,6 @@ var gheditor;
 		var i, pageContent, title = document.title;
 
 		function savedialog(editor) {
-			var link = document.createElement("a"), BOM = new ArrayBuffer(3), v = new Uint8Array(BOM);
-			v.set([ 0xEF, 0xBB, 0xBF ]);
-			link.href = URL.createObjectURL(new Blob([ BOM, editor.getData() ]));
-			link.download = (location.pathname.split("/").pop() || "Unnamed page.html");
-			link.innerHTML = "Download the page";
-			link.style.textDecoration = "underline";
 			return {
 				title : 'Save HTML file',
 				minWidth : 200,
@@ -86,7 +79,62 @@ var gheditor;
 				onOk : function(e) {
 					var html = gheditor.editor.getData();
 					var comments = this.getValueOf('tab-basic', 'comments');
-					save(html, comments)
+					save(getPath(), html, comments)
+				}
+			};
+		}
+
+		function newpagedialog(editor) {
+			return {
+				title : 'New page',
+				minWidth : 200,
+				minHeight : 50,
+				contents : [ {
+					id: 'tab-basic',
+					elements : [ {
+						type : 'text',
+						id : 'filename',
+						label : 'Page full path',
+						validate : CKEDITOR.dialog.validate.notEmpty( 'The filename cannot be empty.' ),
+						required : true,
+						'default' : "page.html"
+					}, {
+						type : 'textarea',
+						id : 'comments',
+						label : 'Comments',
+						validate : CKEDITOR.dialog.validate.notEmpty( 'The Comments field cannot be empty.' ),
+						required : true,
+						'default' : "Created from GitHub Pages Editor extension"
+					}, {
+						type : 'file',
+						id : 'file',
+						label : 'File (leave empty to create an empty HTML page)',
+						required : false
+					} ]
+				} ],
+				buttons : [ CKEDITOR.dialog.okButton ],
+				onOk : function(e) {
+					var self = this;
+					var comments = this.getValueOf('tab-basic', 'comments');
+					var files = this.getContentElement('tab-basic', 'file').getInputElement().$.files
+					if(files.length > 0) {
+						var file = files[0];
+						var reader = new FileReader();
+						reader.onload = function(e) {
+							console.log(e.target);
+							var dataurl = reader.result;
+							var content = {
+		            "content": dataurl.substr(dataurl.indexOf("base64,")+7),
+		            "encoding": "base64"
+			        };
+					    save(self.getValueOf('tab-basic', 'filename'), content, comments);
+						}
+						reader.readAsDataURL(file);
+						
+					} else {
+						var content = "<html></html>";
+						save(this.getValueOf('tab-basic', 'filename'), content, comments);
+					}
 				}
 			};
 		}
@@ -104,6 +152,7 @@ var gheditor;
 			CKEDITOR.config.skin = message.options.skin;
 			CKEDITOR.config.toolbar = message.options.toolbar;
 			CKEDITOR.dialog.add('saveDialog', savedialog);
+			CKEDITOR.dialog.add('newpageDialog', newpagedialog);
 			gheditor = {
 				editor : CKEDITOR.replace(TEXTAREA_ID, {
 					customConfig : message.configScript
@@ -112,6 +161,7 @@ var gheditor;
 			};
 			gheditor.editor.setData(pageContent, function() {
 				gheditor.editor.addCommand('save', new CKEDITOR.dialogCommand('saveDialog'));
+				gheditor.editor.addCommand('newpage', new CKEDITOR.dialogCommand('newpageDialog'));
 				gheditor.editor.execCommand("maximize");
 			});
 		}
