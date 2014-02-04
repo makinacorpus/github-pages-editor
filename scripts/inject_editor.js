@@ -15,9 +15,10 @@ var gheditor;
 			gheditor.options.user,
 			gheditor.options.repository
 			);
+		var path = getPath();
 		repo.write(
 			gheditor.options.branch,
-			'index.html',
+			path,
 			html,
 			comments,
 			function(err) {
@@ -28,6 +29,16 @@ var gheditor;
 				}
 			});
 	};
+
+	function getPath() {
+		var root = gheditor.options.website;
+		var current = location.href;
+		if(current[current.length - 1]=="/") {
+	    current += "index.html";
+	  }
+		var path = current.substr(root.length);
+	  return path;
+	}
 
 	function getDoctype() {
 		var docType = document.doctype, docTypeStr;

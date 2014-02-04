@@ -1,9 +1,15 @@
 // Saves options to localStorage.
 function save_options() {
-  var fields = ["user", "repository", "branch", "account", "password"];
+  var fields = ["user", "repository", "branch", "account", "password", "website"];
   for(var i=0; i<fields.length; i++) {
     var field = document.getElementById("field-" + fields[i]);
-    localStorage[fields[i]] = field.value;
+    var value = field.value;
+    if(fields[i]=="website") {
+      if(value[value.length - 1]!="/") {
+        value += "/";
+      }
+    }
+    localStorage[fields[i]] = value;
   }
 
   // Update status to let user know options were saved.
@@ -16,7 +22,7 @@ function save_options() {
 
 // Restores values from localStorage.
 function restore_options() {
-  var fields = ["user", "repository", "branch", "account", "password"];
+  var fields = ["user", "repository", "branch", "account", "password", "website"];
   for(var i=0; i<fields.length; i++) {
     var stored_value = localStorage[fields[i]];
     if(!stored_value && fields[i] == "branch") stored_value = "gh-pages";
