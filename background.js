@@ -1,7 +1,19 @@
 var tabs = [];
 
 chrome.browserAction.onClicked.addListener(function(tab) {
-  if(tab.url.indexOf(localStorage['website'])==0) {
+  var sites = [];
+  if(localStorage["sites"]) {
+    sites = JSON.parse(localStorage["sites"]);
+  }
+  var valid = false;
+  var site = [];
+  for(var i=0;i<sites.length;i++) {
+    if(tab.url.indexOf(sites[i][3])==0) {
+      valid = true;
+      site = sites[i];
+    }
+  }
+  if(valid) {
     tabs[tab.id].port.postMessage({
       toggleEditor : true,
       options : {
@@ -9,10 +21,10 @@ chrome.browserAction.onClicked.addListener(function(tab) {
         toolbar : "CustomFull",
         account: localStorage['account'],
         password: localStorage['password'],
-        user: localStorage['user'],
-        repository: localStorage['repository'],
-        branch: localStorage['branch'],
-        website: localStorage['website']
+        user: site[0],
+        repository: site[1],
+        branch: site[2],
+        website: site[3]
       }
     });
   } else {

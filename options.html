@@ -10,23 +10,7 @@
                 <img alt="icon" id="icon" src="icon_48.png"/>
                 GitHub Pages editor settings
             </h2>  
-            <hr>        
-            <div class="optionBlock">
-                <label for="user">User (or organization)</label>
-                <input type="text" name="user" id="field-user" />
-            </div>
-            <div class="optionBlock">
-                <label for="repository">Repository</label>
-                <input type="text" name="repository" id="field-repository" />
-            </div>
-            <div class="optionBlock">
-                <label for="branch">Branch</label>
-                <input type="text" name="branch" id="field-branch"/>
-            </div>
-            <div class="optionBlock">
-                <label for="website">Website</label>
-                <input type="text" name="website" id="field-website"/>
-            </div>
+            <hr>    
             <div class="optionBlock">
                 <label for="account">Account</label>
                 <input type="text" name="account" id="field-account" />
@@ -35,10 +19,50 @@
                 <label for="password">Password</label>
                 <input type="password" name="password" id="field-password" />
             </div>
+            <div class="optionBlock">
+                <label>Managed sites</label>
+                <div id="sites">
+                    <div class="headers">
+                        <div class="cell">
+                            <label>User / organization</label>
+                        </div>
+                        <div class="cell">
+                            <label>Repository</label>
+                        </div>
+                        <div class="cell">
+                            <label>Branch</label>
+                        </div>
+                        <div class="cell">
+                            <label>Website</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <div id="status"></div>
             <button id="save">Save</button>
+            <button id="add">Add a new site</button>
         </div>      
     </div>
+    <div id="template">
+        <div class="siteinfo">
+            <div class="cell">
+                <input type="text" name="user" />
+            </div>
+            <div class="cell">
+                <input type="text" name="repository" />
+            </div>
+            <div class="cell">
+                <input type="text" name="branch" value="gh-pages" />
+            </div>
+            <div class="cell">
+                <input type="text" name="website" />
+            </div>
+        </div>
+    </div>
+    <footer>Created by
+        <a href="http://makina-corpus.com"><img src="makina-corpus.png" /></a>
+    </footer>
     <script src="options.js"></script>
 </body>
 </html>

@@ -1,12 +1,13 @@
-body>div {
-	position: relative;
-	margin: 0px auto;
-	width: 220px;
-	font-family: sans-serif;
-	background-color: #F3F7FC;
-	border: 1px solid #D2DBED;
+body {
+	background-color: #fff;
 	font-family: Arial, sans-serif;
 	font-size: 13px;
+}
+
+body>div {
+	position: relative;
+	margin: 1em auto;
+	border: 1px solid #D2DBED;
 	-webkit-box-shadow: #999 3px 3px 3px;
 }
 
@@ -29,7 +30,7 @@ h2 {
 
 label {
 	display: inline-block;
-	width: 100px;
+	width: 200px;
 }
 
 select {
@@ -49,4 +50,20 @@ select {
 p {
 	font-style: italic;
 	text-align: justify;
+}
+
+footer {
+	text-align: right;
+}
+#sites {
+	display: table;
+}
+#sites .headers, #sites .siteinfo {
+	display: table-row;
+}
+#sites .cell {
+	display: table-cell;
+}
+#template {
+	display: none;
 }
