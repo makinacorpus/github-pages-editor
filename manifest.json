@@ -21,7 +21,6 @@
     "scripts/ckeditor_config.js",
     "scripts/inject_editor.js",
     "ckeditor/*",
-    "plugins/*",
     "lib/*"
   ],
   "browser_action": {

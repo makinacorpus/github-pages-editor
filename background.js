@@ -17,7 +17,7 @@ chrome.browserAction.onClicked.addListener(function(tab) {
     tabs[tab.id].port.postMessage({
       toggleEditor : true,
       options : {
-        skin : "kama",
+        skin : "moono",
         toolbar : "CustomFull",
         account: localStorage['account'],
         password: localStorage['password'],

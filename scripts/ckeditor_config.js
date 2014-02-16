@@ -14,5 +14,5 @@
 
 	config.fullPage = true;
 	config.startupFocus = true;
-	CKEDITOR.config.extraPlugins = "codemirrorarea,tableresize,docprops,stylesheetparser";
+	config.height = window.screen.availHeight + "px";
 };
